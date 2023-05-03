@@ -1,25 +1,31 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AppComponent } from "src/app/application/components/app/app-component/app.component";
-import { HomeComponent } from "src/app/application/components/app/home/home.component";
-import { PageNotFoundComponent } from "src/app/application/components/app/page-not-found/page-not-found.component";
-import { ForgottenPasswordComponent } from "src/app/application/components/login/forgotten-password/forgotten-password.component";
-import { NewUserComponent } from "src/app/application/components/login/new-user/new-user.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: "full"},
-  { path: 'home', component: HomeComponent , pathMatch: "full"},
-  { path: 'new-user', component: NewUserComponent , pathMatch: "full"},
-  { path: 'forgotten-password', component: ForgottenPasswordComponent , pathMatch: "full"},
-  { path: '**', component: PageNotFoundComponent , pathMatch: "full"}
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {
+    path: 'home',
+    loadChildren: () =>
+      import(
+        'src/app/application/components/app/app-module-routing.module'
+      ).then((m) => m.AppModuleRoutingModule),
+  },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('src/app/application/components/login/login-routing.module').then(
+        (m) => m.LoginRoutingModule
+      ),
+  },
+  { path: '**', component: PageNotFoundComponent, pathMatch: 'full' },
 ];
 
 @NgModule({
   declarations: [],
   imports: [
-    RouterModule.forRoot(routes, { initialNavigation: "enabledBlocking" }),
+    RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
 export class AppRoutingModule {}
